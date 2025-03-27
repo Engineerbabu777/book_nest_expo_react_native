@@ -85,7 +85,7 @@ router.delete("/:id", authMiddleware, async (req, res) => {
     }
 
     await cloudinary.uploader.destroy(book.image);
-    await book.remove();
+    await book.deleteOne();
 
     res.json({ message: "Book deleted successfully!" });
   } catch (error) {
