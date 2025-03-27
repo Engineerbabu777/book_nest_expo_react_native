@@ -1,5 +1,7 @@
 import express from "express";
 import { userModel } from "../models/User.js";
+import bcryptjs from "bcryptjs";
+
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
@@ -27,8 +29,21 @@ router.post("/register", async (req, res) => {
         .status(400)
         .json({ message: "User already exists with this email or username!" });
     }
-    const user = await userModel.create({ email, username, password });
-    res.status(201).json({ message: "User registered successfully" });
+
+    const profileImage = `https://api.dicebear.com/9.x/avataaars/svg?seed=${username}`;
+
+    // has password!
+    const hashedPassword = await bcryptjs.hash(password, 10);
+
+    // create and save user to db!
+    const user = await userModel.create({
+      email,
+      username,
+      password: hashedPassword,
+      profileImage
+    });
+
+    res.status(201).json({ message: "User registered successfully", user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
