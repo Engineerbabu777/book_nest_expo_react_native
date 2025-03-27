@@ -52,7 +52,8 @@ router.get("/", authMiddleware, async (req, res) => {
     const totalCount = await BookModel.countDocuments({});
 
     const books = await BookModel.find()
-      .populate("user", "username")
+      .sort({ createdAt: -1 })
+      .populate("user", "username profileImage")
       .skip(startIndex)
       .limit(limit);
 
