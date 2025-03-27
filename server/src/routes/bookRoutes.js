@@ -93,4 +93,19 @@ router.delete("/:id", authMiddleware, async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+// books by current user!
+router.get("/user", authMiddleware, async (req, res) => {
+  try {
+    const books = await BookModel.find({ user: req.user._id })
+      .sort({ createdAt: -1 })
+      .populate("user", "username profileImage");
+
+    res.json({ message: "Books fetched successfully!", books });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 export default router;
