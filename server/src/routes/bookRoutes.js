@@ -29,8 +29,8 @@ router.post("/", authMiddleware, async function (req, res) {
       title,
       caption,
       image: uploadResponse.secure_url,
-      category
-      //   user: req?.user?._id
+      category,
+      user: req?.user?._id
     });
 
     res.status(201).json({ message: "Book created successfully!", book });
