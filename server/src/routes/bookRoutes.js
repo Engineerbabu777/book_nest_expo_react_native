@@ -39,4 +39,32 @@ router.post("/", authMiddleware, async function (req, res) {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+// get all books with pagination!!
+router.get("/", authMiddleware, async (req, res) => {
+  try {
+    // apply pagination!
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const startIndex = (page - 1) * limit;
+
+    const totalCount = await BookModel.countDocuments({});
+
+    const books = await BookModel.find()
+      .populate("user", "username")
+      .skip(startIndex)
+      .limit(limit);
+
+    res.json({
+      message: "Books fetched successfully!",
+      books,
+      currentPage: page,
+      totalPages: Math.ceil(totalCount / limit)
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 export default router;
