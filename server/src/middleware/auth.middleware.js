@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 // create middleware!
 export const authMiddleware = async (req, res, next) => {
-  const token = req.header("Authorization");
+  const token = req.header("Authorization").replace("Bearer ", "");
 
   if (!token) {
     return res.status(401).json({ message: "No token, authorization denied" });
@@ -13,10 +13,10 @@ export const authMiddleware = async (req, res, next) => {
 
   // verify token
   try {
-    const userId = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // get from data base!
-    const user = await userModel.findById(userId);
+    const user = await userModel.findById(decoded?.id);
 
     if (!user) {
       return res
