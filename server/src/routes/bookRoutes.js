@@ -68,4 +68,29 @@ router.get("/", authMiddleware, async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+// delete book!
+router.delete("/:id", authMiddleware, async (req, res) => {
+  try {
+    const book = await BookModel.findById(req.params.id);
+
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    if (book.user.toString() !== req.user._id.toString()) {
+      return res
+        .status(403)
+        .json({ message: "Unauthorized to delete this book" });
+    }
+
+    await cloudinary.uploader.destroy(book.image);
+    await book.remove();
+
+    res.json({ message: "Book deleted successfully!" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 export default router;
