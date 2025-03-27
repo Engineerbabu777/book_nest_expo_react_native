@@ -1,6 +1,7 @@
 import express from "express";
 import { userModel } from "../models/User.js";
 import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -32,7 +33,7 @@ router.post("/register", async (req, res) => {
 
     const profileImage = `https://api.dicebear.com/9.x/avataaars/svg?seed=${username}`;
 
-    // has password!
+    // hashed password!
     const hashedPassword = await bcryptjs.hash(password, 10);
 
     // create and save user to db!
@@ -43,7 +44,14 @@ router.post("/register", async (req, res) => {
       profileImage
     });
 
-    res.status(201).json({ message: "User registered successfully", user });
+    // generate jwt token!
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d"
+    });
+
+    res
+      .status(201)
+      .json({ message: "User registered successfully", user, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
