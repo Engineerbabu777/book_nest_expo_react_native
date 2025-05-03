@@ -1,13 +1,15 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TextInput } from "react-native";
 import React, { useState } from "react";
 import styles from "../../assets/styles/login.styles";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import COLORS from "@/constants/colors";
 
 type Props = {};
 
 const index = (props: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState("");
 
   const handleLogin = async () => {};
@@ -21,6 +23,62 @@ const index = (props: Props) => {
           style={styles.illustrationImage}
           resizeMode="contain"
         />
+      </View>
+
+      <View style={styles.card}>
+        <View style={styles.formContainer}>
+          {/* Email! */}
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Email</Text>
+            <View style={styles.inputContainer}>
+              <Ionicons
+                name="mail"
+                size={20}
+                color={COLORS.primary}
+                style={styles.inputIcon}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your email"
+                placeholderTextColor={COLORS.placeholderText}
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+              />
+            </View>
+          </View>
+
+          {/* Password! */}
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Password</Text>
+            <View style={styles.inputContainer}>
+              <Ionicons
+                name="mail"
+                size={20}
+                color={COLORS.primary}
+                style={styles.inputIcon}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your password"
+                placeholderTextColor={COLORS.placeholderText}
+                value={password}
+                onChangeText={setPassword}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                secureTextEntry={showPassword}
+              />
+              <Ionicons
+                name={showPassword ? "eye-outline" : "eye-off-outline"}
+                size={20}
+                color={COLORS.primary}
+                style={styles.inputIcon}
+                onPress={() => setShowPassword(!showPassword)}
+              />
+            </View>
+          </View>
+        </View>
       </View>
     </View>
   );
