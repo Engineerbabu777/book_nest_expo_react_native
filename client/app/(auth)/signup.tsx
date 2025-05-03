@@ -13,6 +13,7 @@ import styles from "../../assets/styles/login.styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import COLORS from "@/constants/colors";
 import { Link } from "expo-router";
+import { useAuthStore } from "@/store/authStore";
 
 type Props = {};
 
@@ -22,6 +23,8 @@ const index = (props: Props) => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { user, sayHello } = useAuthStore();
 
   const handleSignUp = async () => {};
 
