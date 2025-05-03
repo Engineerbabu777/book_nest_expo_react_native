@@ -1,4 +1,11 @@
-import { View, Text, Image, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import React, { useState } from "react";
 import styles from "../../assets/styles/login.styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -10,7 +17,7 @@ const index = (props: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {};
 
@@ -78,6 +85,22 @@ const index = (props: Props) => {
               />
             </View>
           </View>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleLogin}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <ActivityIndicator color={"#fff"} />
+              </>
+            ) : (
+              <>
+                <Text style={styles.buttonText}>Login</Text>
+              </>
+            )}
+          </TouchableOpacity>
         </View>
       </View>
     </View>
