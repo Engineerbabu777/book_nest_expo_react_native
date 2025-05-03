@@ -18,11 +18,12 @@ type Props = {};
 
 const index = (props: Props) => {
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = async () => {};
+  const handleSignUp = async () => {};
 
   return (
     <KeyboardAvoidingView
@@ -38,6 +39,27 @@ const index = (props: Props) => {
             <View style={styles.header}>
               <Text style={styles.title}>BookWorm🐛</Text>
               <Text style={styles.subtitle}>Share your favorite reads</Text>
+            </View>
+            {/* Username! */}
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Username</Text>
+              <View style={styles.inputContainer}>
+                <Ionicons
+                  name="person"
+                  size={20}
+                  color={COLORS.primary}
+                  style={styles.inputIcon}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter username"
+                  placeholderTextColor={COLORS.placeholderText}
+                  value={username}
+                  onChangeText={setUsername}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+              </View>
             </View>
             {/* Email! */}
             <View style={styles.inputGroup}>
@@ -66,7 +88,7 @@ const index = (props: Props) => {
               <Text style={styles.label}>Password</Text>
               <View style={styles.inputContainer}>
                 <Ionicons
-                  name="mail"
+                  name="lock-closed"
                   size={20}
                   color={COLORS.primary}
                   style={styles.inputIcon}
@@ -93,7 +115,7 @@ const index = (props: Props) => {
 
             <TouchableOpacity
               style={styles.button}
-              onPress={handleLogin}
+              onPress={handleSignUp}
               disabled={isLoading}
             >
               {isLoading ? (
@@ -109,10 +131,10 @@ const index = (props: Props) => {
 
             {/* Footer */}
             <View style={styles.footer}>
-              <Text style={styles.footerText}>Don't have an account?</Text>
-              <Link href={"/signup"} asChild>
+              <Text style={styles.footerText}>Already have an account?</Text>
+              <Link href={"/"} asChild>
                 <TouchableOpacity>
-                  <Text style={styles.link}>Sign Up</Text>
+                  <Text style={styles.link}>Sign In</Text>
                 </TouchableOpacity>
               </Link>
             </View>

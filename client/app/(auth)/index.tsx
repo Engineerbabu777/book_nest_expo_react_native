@@ -70,7 +70,8 @@ const index = (props: Props) => {
               <Text style={styles.label}>Password</Text>
               <View style={styles.inputContainer}>
                 <Ionicons
-                  name="mail"
+                               name="lock-closed"
+
                   size={20}
                   color={COLORS.primary}
                   style={styles.inputIcon}
