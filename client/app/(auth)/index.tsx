@@ -10,6 +10,7 @@ import React, { useState } from "react";
 import styles from "../../assets/styles/login.styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import COLORS from "@/constants/colors";
+import { Link } from "expo-router";
 
 type Props = {};
 
@@ -77,7 +78,7 @@ const index = (props: Props) => {
                 secureTextEntry={showPassword}
               />
               <Ionicons
-                name={showPassword ? "eye-outline" : "eye-off-outline"}
+                name={!showPassword ? "eye-outline" : "eye-off-outline"}
                 size={20}
                 color={COLORS.primary}
                 style={styles.inputIcon}
@@ -101,6 +102,16 @@ const index = (props: Props) => {
               </>
             )}
           </TouchableOpacity>
+
+          {/* Footer */}
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>Don't have an account?</Text>
+            <Link href={"/signup"} asChild>
+              <TouchableOpacity>
+                <Text style={styles.link}>Sign Up</Text>
+              </TouchableOpacity>
+            </Link>
+          </View>
         </View>
       </View>
     </View>
