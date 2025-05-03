@@ -9,7 +9,7 @@ interface AuthState {
     username: string,
     email: string,
     password: string
-  ) => Promise<{ success: boolean }>;
+  ) => Promise<{ success: boolean; error?: string | any }>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -22,15 +22,32 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true });
 
     try {
-      const response = await fetch("https://localhost:3000/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, email, password }),
-      });
+      const response = await fetch(
+        "http://192.168.116.54:3000/api/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, email, password }),
+        }
+      );
 
       const data = await response.json();
+
+      console.log({ data });
+
+      if (data.message) {
+        if (data.message.includes("exists")) {
+
+          set({ isLoading: false });
+
+          return {
+            success: false,
+            error: "User already exists!",
+          };
+        }
+      }
 
       await AsyncStorage.setItem("token", data?.token);
       await AsyncStorage.setItem("user", JSON.stringify(data?.user));
@@ -51,6 +68,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
       return {
         success: false,
+        error: error,
       };
     }
   },

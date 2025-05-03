@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import styles from "../../assets/styles/login.styles";
@@ -22,11 +23,18 @@ const index = (props: Props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const { user, sayHello } = useAuthStore();
+  const { user, register, isLoading } = useAuthStore();
 
-  const handleSignUp = async () => {};
+  const handleSignUp = async () => {
+    const result = await register(username, email, password);
+
+    if (result.success) {
+      Alert.alert("User Registered!");
+    } else {
+      Alert.alert("Error", result.error);
+    }
+  };
 
   return (
     <KeyboardAvoidingView
