@@ -4,6 +4,7 @@ interface AuthState {
   user: any | null;
   token: string | null;
   isLoading: boolean;
+  checkAuth: () => Promise<boolean>;
 
   register: (
     username: string,
@@ -23,7 +24,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
     try {
       const response = await fetch(
-        "http://192.168.116.54:3000/api/auth/register",
+        "http://192.168.172.216:3000/api/auth/register",
         {
           method: "POST",
           headers: {
@@ -39,7 +40,6 @@ export const useAuthStore = create<AuthState>((set) => ({
 
       if (data.message) {
         if (data.message.includes("exists")) {
-
           set({ isLoading: false });
 
           return {
@@ -71,5 +71,32 @@ export const useAuthStore = create<AuthState>((set) => ({
         error: error,
       };
     }
+  },
+  checkAuth: async () => {
+    const token = await AsyncStorage.getItem("token");
+    const user = await AsyncStorage.getItem("user");
+
+    if (!token || !user) {
+      console.log("AUTH CHECK FAILED");
+      return false;
+    } else {
+      set({
+        token,
+        user: JSON.parse(user!),
+      });
+
+      return true;
+    }
+  },
+  logout: async () => {
+    const token = await AsyncStorage.removeItem("token");
+    const user = await AsyncStorage.removeItem("user");
+
+    set({
+      token: null,
+      user: null,
+    });
+
+    return true;
   },
 }));
