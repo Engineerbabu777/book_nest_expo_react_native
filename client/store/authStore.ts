@@ -72,6 +72,50 @@ export const useAuthStore = create<AuthState>((set) => ({
       };
     }
   },
+   // REGISTER NEW USER!
+   login: async ( email, password) => {
+    set({ isLoading: true });
+
+    try {
+      const response = await fetch(
+        "http://192.168.172.216:3000/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({  email, password }),
+        }
+      );
+
+      const data = await response.json();
+
+      console.log({ data });
+
+
+      await AsyncStorage.setItem("token", data?.token);
+      await AsyncStorage.setItem("user", JSON.stringify(data?.user));
+
+      // Example of updating store with response
+      set({
+        user: data.user,
+        token: data.token,
+        isLoading: false,
+      });
+
+      return {
+        success: true,
+      };
+    } catch (error) {
+      console.error("Login failed", error);
+      set({ isLoading: false });
+
+      return {
+        success: false,
+        error: error,
+      };
+    }
+  },
   checkAuth: async () => {
     const token = await AsyncStorage.getItem("token");
     const user = await AsyncStorage.getItem("user");
