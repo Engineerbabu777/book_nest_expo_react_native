@@ -23,7 +23,7 @@ const index = (props: Props) => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const { user, login, isLoading } = useAuthStore();
+  const { login, isLoading } = useAuthStore();
 
   const handleLogin = async () => {
     const result = await login(email, password);

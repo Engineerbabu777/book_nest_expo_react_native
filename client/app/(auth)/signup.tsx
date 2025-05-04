@@ -24,7 +24,7 @@ const index = (props: Props) => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const { user, register, isLoading } = useAuthStore();
+  const { register, isLoading } = useAuthStore();
 
   const handleSignUp = async () => {
     const result = await register(username, email, password);

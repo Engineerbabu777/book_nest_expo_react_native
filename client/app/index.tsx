@@ -1,13 +1,13 @@
 import { useAuthStore } from "@/store/authStore";
 import { Redirect } from "expo-router";
 import { useEffect, useState } from "react";
-import { View, ActivityIndicator, StyleSheet } from "react-native";
+import { View, ActivityIndicator, StyleSheet, Text } from "react-native";
 
 export default function Index() {
   const { user, token, checkAuth } = useAuthStore();
   const [loading, setLoading] = useState(true);
 
-  console.log({ loading ,user,token});
+  console.log({ loading, user, token });
   useEffect(() => {
     const checkAuthentication = async () => {
       await checkAuth();
@@ -17,15 +17,27 @@ export default function Index() {
     checkAuthentication();
   }, []);
 
-  if (loading) {
+  // STILL LOADING!
+  if (loading === true && user === null && token === null) {
     return (
       <View style={styles.loaderContainer}>
         <ActivityIndicator size="large" color="#e17055" />
       </View>
     );
-  } else {
+  }
+
+  // USER IS NOT LOGGED IN!
+  if (loading === false && user === null && token === null) {
     return <Redirect href={"/(auth)"} />;
   }
+
+  return (
+    <>
+      <View>
+        <Text>User is log in</Text>
+      </View>
+    </>
+  );
 }
 
 const styles = StyleSheet.create({
