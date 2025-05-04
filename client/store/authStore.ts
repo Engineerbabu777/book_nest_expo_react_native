@@ -5,7 +5,10 @@ interface AuthState {
   token: string | null;
   isLoading: boolean;
   checkAuth: () => Promise<boolean>;
-
+  login: (
+    email: string,
+    password: string
+  ) => Promise<{ success: boolean; error?: string | any }>;
   register: (
     username: string,
     email: string,
@@ -72,8 +75,8 @@ export const useAuthStore = create<AuthState>((set) => ({
       };
     }
   },
-   // REGISTER NEW USER!
-   login: async ( email, password) => {
+  // REGISTER NEW USER!
+  login: async (email, password) => {
     set({ isLoading: true });
 
     try {
@@ -84,14 +87,13 @@ export const useAuthStore = create<AuthState>((set) => ({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({  email, password }),
+          body: JSON.stringify({ email, password }),
         }
       );
 
       const data = await response.json();
 
       console.log({ data });
-
 
       await AsyncStorage.setItem("token", data?.token);
       await AsyncStorage.setItem("user", JSON.stringify(data?.user));

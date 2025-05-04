@@ -7,12 +7,14 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import styles from "../../assets/styles/login.styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import COLORS from "@/constants/colors";
 import { Link } from "expo-router";
+import { useAuthStore } from "@/store/authStore";
 
 type Props = {};
 
@@ -20,10 +22,18 @@ const index = (props: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = async () => {};
+  const { user, login, isLoading } = useAuthStore();
 
+  const handleLogin = async () => {
+    const result = await login(email, password);
+
+    if (result.success) {
+      Alert.alert("User Login Success!");
+    } else {
+      Alert.alert("Error", result.error);
+    }
+  };
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
