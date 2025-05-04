@@ -31,13 +31,8 @@ export default function Index() {
     return <Redirect href={"/(auth)"} />;
   }
 
-  return (
-    <>
-      <View>
-        <Text>User is log in</Text>
-      </View>
-    </>
-  );
+  return <Redirect href={"/(tabs)"} />;
+
 }
 
 const styles = StyleSheet.create({
