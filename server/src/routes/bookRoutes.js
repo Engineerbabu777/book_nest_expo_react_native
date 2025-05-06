@@ -28,7 +28,8 @@ router.post("/", authMiddleware, async function (req, res) {
     const book = await BookModel.create({
       title,
       caption,
-      image: 'https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=',
+      image:
+        "https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=",
       category,
       user: req?.user?._id,
       rating: Number(rating),
@@ -85,10 +86,10 @@ router.delete("/:id", authMiddleware, async (req, res) => {
         .json({ message: "Unauthorized to delete this book" });
     }
 
-    await cloudinary.uploader.destroy(book.image);
+    // await cloudinary.uploader.destroy(book.image);
     await book.deleteOne();
 
-    res.json({ message: "Book deleted successfully!" });
+    res.json({ message: "Book deleted successfully!", success: true });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -98,11 +99,11 @@ router.delete("/:id", authMiddleware, async (req, res) => {
 // books by current user!
 router.get("/user", authMiddleware, async (req, res) => {
   try {
-    const user = await BookModel.find({ user: req.user._id })
+    const books = await BookModel.find({ user: req.user._id })
       .sort({ createdAt: -1 })
       .populate("user", "username profileImage");
 
-    res.json({ message: "Books fetched successfully!", user });
+    res.json({ message: "Books fetched successfully!", books });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

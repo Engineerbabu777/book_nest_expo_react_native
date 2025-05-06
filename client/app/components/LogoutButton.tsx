@@ -3,7 +3,7 @@ import React from "react";
 import styles from "../../assets/styles/profile.style";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "expo-router";
-
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 export default function LogoutButton() {
   const { logout } = useAuthStore();
 
@@ -15,7 +15,8 @@ export default function LogoutButton() {
   };
   return (
     <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-      <Text>Logout</Text>
+      <MaterialCommunityIcons name="logout" size={24} color="white" />
+      <Text style={styles.logoutText}>Logout</Text>
     </TouchableOpacity>
   );
 }
