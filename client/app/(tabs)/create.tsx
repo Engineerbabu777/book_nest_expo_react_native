@@ -1,4 +1,5 @@
 import {
+  Image,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -42,7 +43,7 @@ const create = (props: Props) => {
           <Ionicons
             name={i <= rating ? "star" : "star-outline"}
             size={32}
-            color={i <= rating ? "#f4f400" : COLORS.textSecondary}
+            color={i <= rating ? "#f4b400" : COLORS.textSecondary}
           />
         </TouchableOpacity>
       );
@@ -96,15 +97,32 @@ const create = (props: Props) => {
             {/* Rating! */}
             <View style={styles.formGroup}>
               <Text style={styles.label}>Rating</Text>
-              {/* {
-                renderRating
-              } */}
-              {/* <Ionicons
-                  name="book-outline"
-                  size={20}
-                  color={COLORS.primary}
-                  style={styles.inputIcon}
-                /> */}
+              {renderRatingPicker()}
+            </View>
+
+            {/* Image! */}
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>Book Image</Text>
+              <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
+                {image ? (
+                  <>
+                    <Image source={{ uri: image }} style={styles.image} />
+                  </>
+                ) : (
+                  <>
+                    <View style={styles.placeholderContainer}>
+                      <Ionicons
+                        name="image-outline"
+                        size={40}
+                        color={COLORS.textSecondary}
+                      />
+                      <Text style={styles.placeholderText}>
+                        Tap to select image
+                      </Text>
+                    </View>
+                  </>
+                )}
+              </TouchableOpacity>
             </View>
           </View>
         </View>
