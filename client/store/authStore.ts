@@ -5,6 +5,7 @@ interface AuthState {
   token: string | null;
   isLoading: boolean;
   checkAuth: () => Promise<boolean>;
+  logout:() => Promise<boolean>;
   login: (
     email: string,
     password: string
