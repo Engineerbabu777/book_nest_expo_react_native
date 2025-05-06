@@ -15,7 +15,7 @@ import styles from "../../assets/styles/create.style";
 import COLORS from "@/constants/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from "expo-file-system";
 
 type Props = {};
 
@@ -36,27 +36,28 @@ const create = (props: Props) => {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 0.5,
-      base64:true
+      base64: true,
     });
 
     console.log(result);
 
     if (!result.canceled) {
-
       setImage(result.assets[0].uri);
 
-      if(result.assets[0].base64){
+      if (result.assets[0].base64) {
         setImageBase64(result.assets[0].base64);
-      }else{
+      } else {
         // convert to base 64!
-        const base64 = await FileSystem.readAsStringAsync(result.assets[0]?.uri,{
-          encoding: FileSystem.EncodingType.Base64,
-        });
+        const base64 = await FileSystem.readAsStringAsync(
+          result.assets[0]?.uri,
+          {
+            encoding: FileSystem.EncodingType.Base64,
+          }
+        );
 
-        setImageBase64(base64)
+        setImageBase64(base64);
       }
-      
-      }
+    }
   };
   const handleSubmit = async () => {};
 
@@ -136,7 +137,10 @@ const create = (props: Props) => {
               <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
                 {image ? (
                   <>
-                    <Image source={{ uri: image }} style={styles.previewImage} />
+                    <Image
+                      source={{ uri: image }}
+                      style={styles.previewImage}
+                    />
                   </>
                 ) : (
                   <>
@@ -153,6 +157,21 @@ const create = (props: Props) => {
                   </>
                 )}
               </TouchableOpacity>
+            </View>
+
+            {/* Caption! */}
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>Caption</Text>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.textArea}
+                  placeholder="Write your review or thoughts about this book...."
+                  placeholderTextColor={COLORS.placeholderText}
+                  value={caption}
+                  onChangeText={setCaption}
+                  multiline
+                />
+              </View>
             </View>
           </View>
         </View>
