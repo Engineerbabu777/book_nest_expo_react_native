@@ -23,7 +23,7 @@ const index = (props: Props) => {
       }
 
       const response = await fetch(
-        `http://localhost:3000/books?page=${pageNum}&limit=5`,
+        `http://192.168.250.216:3000/api/books?page=${pageNum}&limit=5`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -31,7 +31,10 @@ const index = (props: Props) => {
         }
       );
 
+      console.log({ response });
+
       const data = await response.json();
+      console.log({ data: data?.books[0] });
 
       if (!response?.ok)
         throw new Error(data?.message || "Failed to fetch books");
@@ -54,7 +57,9 @@ const index = (props: Props) => {
       <View style={styles.bookHeader}>
         <View style={styles.userInfo}>
           <Image
-            source={{ uri: item?.user?.profileImage }}
+            source={{
+              uri: "https://hips.hearstapps.com/hmg-prod/images/elon-musk-gettyimages-2147789844-web-675b2c17301ea.jpg?crop=0.6666666666666666xw:1xh;center,top&resize=640:*",
+            }}
             style={styles.avatar}
           />
           <Text style={styles.username}>{item?.user?.username}</Text>
@@ -62,11 +67,7 @@ const index = (props: Props) => {
       </View>
 
       <View style={styles.bookImageContainer}>
-        <Image
-          source={item?.image}
-          style={styles.bookImage}
-          contentFit="cover"
-        />
+        <Image source={{ uri: item?.image }} style={styles.bookImage} />
       </View>
     </View>
   );
