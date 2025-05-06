@@ -2,6 +2,7 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -126,10 +127,7 @@ const index = (props: Props) => {
           backgroundColor: COLORS.background,
         }}
       >
-        <ActivityIndicator
-          size={20}
-          color={COLORS.primary}
-        />
+        <ActivityIndicator size={20} color={COLORS.primary} />
       </View>
     );
   }
@@ -175,6 +173,12 @@ const index = (props: Props) => {
               />
             </>
           ) : null
+        }
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => fetchBooks(1, true)}
+          />
         }
       />
     </View>
