@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 import React, { useState } from "react";
@@ -27,6 +28,27 @@ const create = (props: Props) => {
 
   const pickImage = async () => {};
   const handleSubmit = async () => {};
+
+  const renderRatingPicker = () => {
+    const stars = [];
+
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <TouchableOpacity
+          key={i}
+          onPress={() => setRating(i)}
+          style={styles.starButton}
+        >
+          <Ionicons
+            name={i <= rating ? "star" : "star-outline"}
+            size={32}
+            color={i <= rating ? "#f4f400" : COLORS.textSecondary}
+          />
+        </TouchableOpacity>
+      );
+    }
+    return <View style={styles.ratingContainer}>{stars}</View>;
+  };
 
   return (
     <KeyboardAvoidingView
@@ -69,6 +91,20 @@ const create = (props: Props) => {
                   autoCapitalize="none"
                 />
               </View>
+            </View>
+
+            {/* Rating! */}
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>Rating</Text>
+              {/* {
+                renderRating
+              } */}
+              {/* <Ionicons
+                  name="book-outline"
+                  size={20}
+                  color={COLORS.primary}
+                  style={styles.inputIcon}
+                /> */}
             </View>
           </View>
         </View>
