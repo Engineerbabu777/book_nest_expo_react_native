@@ -14,6 +14,8 @@ import { useRouter } from "expo-router";
 import styles from "../../assets/styles/create.style";
 import COLORS from "@/constants/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from 'expo-file-system';
 
 type Props = {};
 
@@ -21,13 +23,41 @@ const create = (props: Props) => {
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
   const [rating, setRating] = useState(3);
-  const [image, setImage] = useState(null);
-  const [imageBase64, setImageBase64] = useState(null);
+  const [image, setImage] = useState<any>(null);
+  const [imageBase64, setImageBase64] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
-  const pickImage = async () => {};
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images", "videos"],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.5,
+      base64:true
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+
+      setImage(result.assets[0].uri);
+
+      if(result.assets[0].base64){
+        setImageBase64(result.assets[0].base64);
+      }else{
+        // convert to base 64!
+        const base64 = await FileSystem.readAsStringAsync(result.assets[0]?.uri,{
+          encoding: FileSystem.EncodingType.Base64,
+        });
+
+        setImageBase64(base64)
+      }
+      
+      }
+  };
   const handleSubmit = async () => {};
 
   const renderRatingPicker = () => {
@@ -106,7 +136,7 @@ const create = (props: Props) => {
               <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
                 {image ? (
                   <>
-                    <Image source={{ uri: image }} style={styles.image} />
+                    <Image source={{ uri: image }} style={styles.previewImage} />
                   </>
                 ) : (
                   <>
