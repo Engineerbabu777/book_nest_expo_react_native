@@ -2,10 +2,13 @@ import express from "express";
 
 import "dotenv/config";
 import jwt from "jsonwebtoken";
+import { userModel } from "../models/User.js";
 
 // create middleware!
 export const authMiddleware = async (req, res, next) => {
   const token = req.header("Authorization").replace("Bearer ", "");
+
+  console.log({token})
 
   if (!token) {
     return res.status(401).json({ message: "No token, authorization denied" });

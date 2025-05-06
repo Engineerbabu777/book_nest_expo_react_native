@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Alert,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -17,6 +18,8 @@ import COLORS from "@/constants/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuthStore } from "@/store/authStore";
 
 type Props = {};
 
@@ -27,6 +30,8 @@ const create = (props: Props) => {
   const [image, setImage] = useState<any>(null);
   const [imageBase64, setImageBase64] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+
+  const { token } = useAuthStore();
 
   const router = useRouter();
 
@@ -60,7 +65,63 @@ const create = (props: Props) => {
       }
     }
   };
-  const handleSubmit = async () => {};
+  const handleSubmit = async () => {
+    if (!title || !caption || !imageBase64 || !rating) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      // get file extension!
+      const uriParts = image.split(".");
+      const fileType = uriParts[uriParts.length - 1];
+      const imageType = fileType
+        ? `image/${fileType.toLowerCase()}`
+        : "image/jpeg";
+
+      const imageDataUrl = `data:${imageType};base64,${imageBase64}`;
+
+      console.log({ token });
+      const response = await fetch("http://192.168.250.216:3000/api/books", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          title: title,
+          caption: caption,
+          image: imageDataUrl,
+          rating: rating.toString(),
+          category:"custom"
+        }),
+      });
+
+      const data = await response.json();
+      console.log(data);
+
+      if (!response?.ok)
+        throw new Error(data.message || "Something went wrong!");
+
+      Alert.alert("Success", "you book recommendation has been posted!");
+
+      // reset!
+      setImage("");
+      setTitle("");
+      setCaption("");
+      setRating(0);
+      setImageBase64("");
+
+      router.push("/");
+    } catch (error: unknown | any) {
+      console.log(error);
+      Alert.alert("Error", error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const renderRatingPicker = () => {
     const stars = [];

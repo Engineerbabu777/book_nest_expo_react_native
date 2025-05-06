@@ -27,7 +27,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
     try {
       const response = await fetch(
-        "http://192.168.172.216:3000/api/auth/register",
+        "http://192.168.250.216:3000/api/auth/register",
         {
           method: "POST",
           headers: {
@@ -81,7 +81,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
     try {
       const response = await fetch(
-        "http://192.168.172.216:3000/api/auth/login",
+        "http://192.168.250.216:3000/api/auth/login",
         {
           method: "POST",
           headers: {

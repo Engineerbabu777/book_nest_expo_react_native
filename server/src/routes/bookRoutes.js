@@ -8,29 +8,30 @@ const router = express.Router();
 // create post!
 router.post("/", authMiddleware, async function (req, res) {
   try {
-    const { title, caption, image, category } = req.body;
+    const { title, caption, image, category, rating } = req.body;
 
     if (!image) {
       return res.status(400).json({ message: "Image is required" });
     }
 
-    if (!category || !caption || !title) {
+    if (!category || !caption || !title || !rating) {
       return res
         .status(400)
         .json({ message: "Title, caption, and category are required" });
     }
 
     // upload image to cloudinary!
-    const uploadResponse = await cloudinary.uploader.upload(image, {
-      folder: "book_images"
-    });
+    // const uploadResponse = await cloudinary.uploader.upload(image, {
+    //   folder: "book_images",
+    // });
 
     const book = await BookModel.create({
       title,
       caption,
-      image: uploadResponse.secure_url,
+      image: 'https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=',
       category,
-      user: req?.user?._id
+      user: req?.user?._id,
+      rating: Number(rating),
     });
 
     res.status(201).json({ message: "Book created successfully!", book });
@@ -61,7 +62,7 @@ router.get("/", authMiddleware, async (req, res) => {
       message: "Books fetched successfully!",
       books,
       currentPage: page,
-      totalPages: Math.ceil(totalCount / limit)
+      totalPages: Math.ceil(totalCount / limit),
     });
   } catch (error) {
     console.error(error);
