@@ -51,8 +51,13 @@ const index = (props: Props) => {
       if (!response?.ok)
         throw new Error(data?.message || "Failed to fetch books");
 
-      setBooks((prev) => [...prev, ...data?.books]);
-
+      setBooks((prev) => {
+        const existingIds = new Set(prev.map((book) => book._id));
+        const newUniqueBooks = data?.books.filter(
+          (book) => !existingIds.has(book._id)
+        );
+        return [...prev, ...newUniqueBooks];
+      });
       setHasMore(pageNum < data?.totalPages);
       setPage(pageNum);
     } catch (error) {
@@ -60,6 +65,7 @@ const index = (props: Props) => {
     } finally {
       if (refresh) {
         setRefreshing(false);
+        setLoading(false);
       } else setLoading(false);
     }
   };
