@@ -31,7 +31,7 @@ router.post("/register", async (req, res) => {
         .json({ message: "User already exists with this email or username!" });
     }
 
-    const profileImage = `https://api.dicebear.com/9.x/avataaars/svg?seed=${username}`;
+    const profileImage = `https://avatar.iran.liara.run/public/boy`;
 
     // hashed password!
     const hashedPassword = await bcryptjs.hash(password, 10);
