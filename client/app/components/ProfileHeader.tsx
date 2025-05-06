@@ -13,7 +13,7 @@ const ProfileHeader = (props: Props) => {
     <View style={styles.profileHeader}>
       <Image
         source={{
-          uri: "https://hips.hearstapps.com/hmg-prod/images/elon-musk-gettyimages-2147789844-web-675b2c17301ea.jpg?crop=0.6666666666666666xw:1xh;center,top&resize=640:*",
+          uri: "https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?semt=ais_hybrid&w=740",
         }}
         style={styles.profileImage}
       />
