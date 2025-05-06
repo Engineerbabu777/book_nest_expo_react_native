@@ -58,7 +58,9 @@ const index = (props: Props) => {
     } catch (error) {
       console.log({ error });
     } finally {
-      setLoading(false);
+      if (refresh) {
+        setRefreshing(false);
+      } else setLoading(false);
     }
   };
 
@@ -178,6 +180,8 @@ const index = (props: Props) => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={() => fetchBooks(1, true)}
+            tintColor={COLORS.primary}
+            colors={[COLORS.primary]}
           />
         }
       />
