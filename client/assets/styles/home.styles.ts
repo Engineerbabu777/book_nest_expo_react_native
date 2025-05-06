@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
   bookImage: {
     width: "100%",
     height: "100%",
+    
   },
   bookDetails: {
     padding: 4,
