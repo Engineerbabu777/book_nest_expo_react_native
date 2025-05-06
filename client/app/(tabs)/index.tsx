@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   StyleSheet,
@@ -60,7 +61,11 @@ const index = (props: Props) => {
     }
   };
 
-  const handleLoadMore = () => {};
+  const handleLoadMore = () => {
+    if (hasMore && !loading && !refreshing) {
+      fetchBooks(page + 1);
+    }
+  };
 
   const renderItem = ({ item }) => (
     <View style={styles.bookCard}>
@@ -85,7 +90,7 @@ const index = (props: Props) => {
         <Text style={styles.ratingContainer}>{renderStarts(item?.rating)}</Text>
         <Text style={styles.caption}>{item?.caption}</Text>
         <Text style={styles.date}>
-          {moment(new Date(item?.createdAt)).format("lll")}
+          Shared on {moment(new Date(item?.createdAt)).format("lll")}
         </Text>
       </View>
     </View>
@@ -111,6 +116,24 @@ const index = (props: Props) => {
     fetchBooks();
   }, []);
 
+  if (loading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: COLORS.background,
+        }}
+      >
+        <ActivityIndicator
+          size={20}
+          color={COLORS.primary}
+        />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -119,6 +142,40 @@ const index = (props: Props) => {
         keyExtractor={(item) => item?._id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContainer}
+        ListHeaderComponent={
+          <View style={styles.header}>
+            <Text style={styles.headerTitle}>BookWorm 🐛</Text>
+            <Text style={styles.headerSubtitle}>
+              Discover great read from the community
+            </Text>
+          </View>
+        }
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <Ionicons
+              name="book-outline"
+              size={60}
+              color={COLORS.textSecondary}
+            />
+            <Text style={styles.emptyText}>No recommendations yet</Text>
+            <Text style={styles.emptySubtext}>
+              Be the first to share a book!
+            </Text>
+          </View>
+        }
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.1}
+        ListFooterComponent={
+          hasMore && books.length > 0 ? (
+            <>
+              <ActivityIndicator
+                style={styles.footerLoader}
+                size={"small"}
+                color={COLORS.primary}
+              />
+            </>
+          ) : null
+        }
       />
     </View>
   );
