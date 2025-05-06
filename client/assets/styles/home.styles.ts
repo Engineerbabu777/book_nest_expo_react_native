@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   ratingContainer: {
     flexDirection: "row",
-    marginBottom: 8,
+    paddingBottom: 4,
   },
   caption: {
     fontSize: 14,

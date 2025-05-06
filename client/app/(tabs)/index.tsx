@@ -1,7 +1,17 @@
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/authStore";
 import styles from "../../assets/styles/home.styles";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import COLORS from "@/constants/colors";
+import moment from "moment";
 
 type Props = {};
 
@@ -69,8 +79,33 @@ const index = (props: Props) => {
       <View style={styles.bookImageContainer}>
         <Image source={{ uri: item?.image }} style={styles.bookImage} />
       </View>
+
+      <View style={styles.bookDetails}>
+        <Text style={styles.bookTitle}>{item?.title}</Text>
+        <Text style={styles.ratingContainer}>{renderStarts(item?.rating)}</Text>
+        <Text style={styles.caption}>{item?.caption}</Text>
+        <Text style={styles.date}>
+          {moment(new Date(item?.createdAt)).format("lll")}
+        </Text>
+      </View>
     </View>
   );
+
+  const renderStarts = (rating: number) => {
+    const stars = [];
+
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <Ionicons
+          key={i}
+          name={i <= rating ? "star" : "star-outline"}
+          size={32}
+          color={i <= rating ? "#f4b400" : COLORS.textSecondary}
+        />
+      );
+    }
+    return <View style={styles.ratingContainer}>{stars}</View>;
+  };
 
   useEffect(() => {
     fetchBooks();
