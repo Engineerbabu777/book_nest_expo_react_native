@@ -31,6 +31,8 @@ router.post("/register", async (req, res) => {
         .json({ message: "User already exists with this email or username!" });
     }
 
+
+    // profile image random testing!
     const profileImage = `https://avatar.iran.liara.run/public/boy`;
 
     // hashed password!
