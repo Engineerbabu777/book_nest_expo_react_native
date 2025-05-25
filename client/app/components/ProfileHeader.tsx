@@ -24,6 +24,8 @@ const ProfileHeader = (props: Props) => {
         <Text style={styles.memberSince}>
           Member Since {moment(new Date(user?.createdAt)).format("l")}
         </Text>
+
+        
       </View>
     </View>
   );
